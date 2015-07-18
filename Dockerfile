@@ -5,3 +5,5 @@ RUN docker-php-ext-install opcache
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_pgsql
+
+RUN ["cp", "/etc/apache2/mods-available/rewrite.load", "/etc/apache2/mods-enabled/"]
