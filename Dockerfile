@@ -5,4 +5,4 @@ RUN docker-php-ext-install opcache
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_pgsql
-RUN pecl install apcu
+RUN pecl install apcu && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
