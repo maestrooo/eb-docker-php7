@@ -1,4 +1,4 @@
-FROM php:7.0-fpm
+FROM php:7.0.1-fpm
 
 RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev
 RUN docker-php-ext-install opcache
