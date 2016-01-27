@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev git lib
     && docker-php-ext-install pdo_pgsql \
     ## APCu
     && pecl install apcu \
-    && docker-php-ext-enable apcu
+    && docker-php-ext-enable apcu \
     # For now we need to compile Memcached extension against PHP7 branch
     && git clone --branch php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
     && cd /usr/src/php/ext/memcached \
