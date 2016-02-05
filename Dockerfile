@@ -1,4 +1,4 @@
-FROM php:7.0.2-fpm
+FROM php:7.0.3-fpm
 
 COPY config/custom.ini /usr/local/etc/php/conf.d/
 
