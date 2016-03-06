@@ -11,3 +11,6 @@ RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev \
     ## APCu
     && pecl install apcu \
     && docker-php-ext-enable apcu
+
+RUN mkdir -p /var/log/php-app
+RUN chown www-data:www-data /var/log/php-app
