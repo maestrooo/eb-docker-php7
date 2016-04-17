@@ -1,8 +1,9 @@
 FROM php:7.0.3-fpm
 
+ENV DEBIAN_FRONTEND noninteractive
 COPY config/custom.ini /usr/local/etc/php/conf.d/
 
-RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfreetype6 wkhtmltopdf \
+RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfreetype6 wget gdebi \
     && docker-php-ext-install opcache \
     && docker-php-ext-install intl \
     && docker-php-ext-install mbstring \
@@ -12,7 +13,13 @@ RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfree
     && pecl install apcu \
     && docker-php-ext-enable apcu
 
+RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+RUN gdebi --n wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+
 RUN mkdir -p /var/log/php-app
 RUN chown www-data:www-data /var/log/php-app
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
+
