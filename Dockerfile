@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfree
     && docker-php-ext-enable apcu \
     # Image Magick
     && pecl install imagick \
-    && docker-php-ext-enable imagick
+    #&& docker-php-ext-enable imagick
+    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
 RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
 RUN gdebi --n wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
