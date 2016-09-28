@@ -3,7 +3,7 @@ FROM php:7.0.3-fpm
 ENV DEBIAN_FRONTEND noninteractive
 COPY config/custom.ini /usr/local/etc/php/conf.d/
 
-RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfreetype6 wget gdebi libmagickwand-dev libmagickcore-dev \
+RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev libpq-dev libfreetype6 wget gdebi libmagickwand-dev libmagickcore-dev imagemagick \
     --no-install-recommends \
     && docker-php-ext-install opcache \
     && docker-php-ext-install intl \
