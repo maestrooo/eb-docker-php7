@@ -19,12 +19,14 @@ RUN apt-get clean && apt-get update && apt-get install -y zlib1g-dev libicu-dev 
     #&& docker-php-ext-enable imagick
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
-RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
 RUN gdebi --n wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+
+RUN wget https://github.com/DataDog/dd-trace-php/releases/download/0.55.0/datadog-php-tracer_0.55.0_amd64.deb \
+    && mv datadog-php-tracer_0.55.0_amd64.deb datadog-php-tracer.deb \
+    && dpkg -i datadog-php-tracer.deb
 
 RUN mkdir -p /var/log/php-app
 RUN chown www-data:www-data /var/log/php-app
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-
