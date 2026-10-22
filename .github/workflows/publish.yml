@@ -1,5 +1,23 @@
 
-      - name: Fix Debian Bullseye repositories
+name: Publish Docker 2.3.0
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub tag 2.3.0
+        uses: actions/checkout@v7
+        with:
+          ref: refs/tags/2.3.0
+
+      - name: Fix Debian Bullseye repositories for the build
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -18,7 +36,25 @@
           )
 
           if old not in content:
-              raise SystemExit("Dockerfile format unexpected")
+              raise SystemExit("Unexpected Dockerfile: could not find apt-get command")
 
           path.write_text(content.replace(old, new, 1))
+          print("Applied temporary Debian repository fix")
           PY
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image 2.3.0
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          tags: maestrooo/eb-docker-php7:2.3.0
