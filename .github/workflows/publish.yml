@@ -16,7 +16,7 @@ jobs:
         with:
           ref: refs/tags/2.3.0
 
-      - name: Fix Debian Bullseye repositories for the build
+      - name: Patch legacy Dockerfile for the build
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -37,8 +37,16 @@ jobs:
           if old not in content:
               raise SystemExit("Unexpected Dockerfile: could not find apt-get command")
 
-          path.write_text(content.replace(old, new, 1))
-          print("Applied temporary Debian repository fix")
+          old_apcu = "pecl install apcu-5.1.5"
+          new_apcu = "pecl install apcu-5.1.22"
+
+          if old_apcu not in content:
+              raise SystemExit("Unexpected Dockerfile: APCu 5.1.5 not found")
+
+          patched = content.replace(old, new, 1)
+          patched = patched.replace(old_apcu, new_apcu, 1)
+          path.write_text(patched)
+          print("Applied Debian, Oniguruma and APCu compatibility fixes")
           PY
 
       - name: Set up Docker Buildx
